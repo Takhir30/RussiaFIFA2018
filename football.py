@@ -56,35 +56,54 @@ groups = {
 }
 
 
-def goals_per_team():
+def goals():
     goals = choice(range(0, 10), p=[0.37, 0.27, 0.2, 0.13, 0.021, 0.005,
                                     0.002, 0.0014, 0.0005, 0.0001])
     return goals
+
+
+def match(team_1, team_2):
+    team_1_goals = goals()
+    team_2_goals = goals()
+    print(f'{team_1}:{team_2} - {team_1_goals}:{team_2_goals}')
+    return [[team_1, team_1_goals, team_2_goals],
+            [team_2, team_2_goals, team_1_goals]]
 
 
 def group_results(group_name):
     group = groups[group_name]
     matches = [i for i in combinations(group.keys(), 2)]
     shuffle(matches)
-    t = PrettyTable(['Country', 'games', 'won', 'draw', 'lost', 'gf', 'ga', 'diff', 'points'])
+    mini_group = {}
+    place = 1
     for teams in matches:
-        team_1_goals = goals_per_team()
-        team_2_goals = goals_per_team()
-        print(f'{teams[0]}:{teams[1]} - {team_1_goals}:{team_2_goals}')
-        result_of_match = [[teams[0], team_1_goals, team_2_goals],
-                           [teams[1], team_2_goals, team_1_goals]]
+        result_of_match = match(teams[0], teams[1])
         statistics(result_of_match, group_name)
+
     print('<----------------------->\n')
     print(f'GROUP {group_name}')
-    for k, v in sorted(group.items(), key=lambda x: (x[1]['points'], x[1]['diff']), reverse = True):
-        t.add_row([k, v['games'], v['won'], v['draw'], v['lost'], v['gf'], v['ga'], v['diff'], v['points']])
+    t = PrettyTable(['Country', 'games', 'won', 'draw', 'lost',
+                     'gf', 'ga', 'diff', 'points'])
+
+    for k, v in sorted(group.items(),
+                       key=lambda x: (x[1]['points'], x[1]['diff']),
+                       reverse = True):
+        t.add_row([k, v['games'], v['won'], v['draw'], v['lost'],
+                      v['gf'], v['ga'], v['diff'], v['points']])
+        if place < 3:
+            mini_group[group_name + str(place)] = k
+            place += 1
     print(t)
+    return mini_group
 
 
 def group_stage_games(groups):
+    play_off_teams = {}
     for group in groups:
-        group_results(group)
+        play_off = group_results(group)
         print('\n<----------------------->')
+        play_off_teams.update(play_off)
+    return play_off_teams
 
 
 def statistics(result, group):
@@ -103,4 +122,9 @@ def statistics(result, group):
             groups[group][i[0]]['lost'] += 1
 
 
-group_stage_games(groups)
+def final_stage():
+    play_off_teams = group_stage_games(groups)
+
+
+
+final_stage()
