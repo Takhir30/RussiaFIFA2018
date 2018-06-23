@@ -1,6 +1,7 @@
 from itertools import combinations
 from numpy.random import choice
 from random import shuffle
+from prettytable import PrettyTable
 
 
 groups = {
@@ -65,34 +66,41 @@ def group_results(group_name):
     group = groups[group_name]
     matches = [i for i in combinations(group.keys(), 2)]
     shuffle(matches)
+    t = PrettyTable(['Country', 'games', 'won', 'draw', 'lost', 'gf', 'ga', 'diff', 'points'])
     for teams in matches:
         team_1_goals = goals_per_team()
         team_2_goals = goals_per_team()
         print(f'{teams[0]}:{teams[1]} - {team_1_goals}:{team_2_goals}')
-        statistics([{teams[0]: team_1_goals}, {teams[1]: team_2_goals}], group)
-
+        result_of_match = [[teams[0], team_1_goals, team_2_goals],
+                           [teams[1], team_2_goals, team_1_goals]]
+        statistics(result_of_match, group_name)
+    print('<----------------------->\n')
+    print(f'GROUP {group_name}')
+    for k, v in sorted(group.items(), key=lambda x: (x[1]['points'], x[1]['diff']), reverse = True):
+        t.add_row([k, v['games'], v['won'], v['draw'], v['lost'], v['gf'], v['ga'], v['diff'], v['points']])
+    print(t)
 
 
 def group_stage_games(groups):
     for group in groups:
         group_results(group)
-        print('<----------------------->')
+        print('\n<----------------------->')
 
 
-def statistics(results, group):
-    team_1 = results[0][0]
-    team_1_goals = results[0][1]
-    team_2 = results[1][0]
-    team_2_goals = results[1][1]
+def statistics(result, group):
+    for i in result:
+        groups[group][i[0]]['games'] += 1
+        groups[group][i[0]]['gf'] += i[1]
+        groups[group][i[0]]['ga'] += i[2]
+        groups[group][i[0]]['diff'] += i[1] - i[2]
+        if i[1] > i[2]:
+            groups[group][i[0]]['won'] += 1
+            groups[group][i[0]]['points'] += 3
+        elif i[1] == i[2]:
+            groups[group][i[0]]['draw'] += 1
+            groups[group][i[0]]['points'] += 1
+        else:
+            groups[group][i[0]]['lost'] += 1
 
-    for i in [team_1, team_2]:
-        group[i]['games'] += 1
-        group[i]['gf'] +=
-        group[i]['ga'] +=
-        group[i]['diff'] = group[i]['gf'] - group[i]['ga']
-    if team_1_goals > team_2_goals:
-        if
-        group[team_1] = []
-    print(results)
 
-group_results('A')
+group_stage_games(groups)
