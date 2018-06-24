@@ -145,7 +145,7 @@ def penalties(team_1, team_2):
             print(f'Penalty:    {team_1_goals}:{team_2_goals} --------------->')
             if team_1_goals > team_2_goals:
                 return team_1 ,team_2
-            elif team_1_goals < team_2_goals:
+            else:
                 return team_2, team_1
 
 
@@ -158,7 +158,7 @@ def kick_out(result):
     if team_1_goals != team_2_goals:
         if team_1_goals > team_2_goals:
             return team_1, team_2
-        elif team_1_goals < team_2_goals:
+        else:
             return team_2, team_1
     else:
         winner, loser = penalties(team_1, team_2)
@@ -181,11 +181,11 @@ def quaterfinal(mini_grid):
             result = match(losers[0], losers[1])
             third_place, loser = kick_out(result)
             print('\nFinal')
-            result = match(mini_grid[0], mini_grid[1])
+            result = match(winners[0], winners[1])
             first_place, second_place = kick_out(result)
             print(f"""\nThe winner is {first_place}
-Second place goes to {second_place}
-Third place goes to {third_place}""")
+                      \nSecond place goes to {second_place}
+                      \nThird place goes to {third_place}\n""")
         else:
             quaterfinal(winners)
 
