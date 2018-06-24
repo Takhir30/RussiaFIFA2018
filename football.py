@@ -162,6 +162,32 @@ def kick_out(result):
             return team_2, team_1
     else:
         winner, loser = penalties(team_1, team_2)
+        return winner, loser
+
+
+#quaterfinal
+def quaterfinal(mini_grid):
+    winners = []
+    losers = []
+    if len(mini_grid) == 8 or len(mini_grid) == 4:
+        print(f'\n1/{len(mini_grid)//2} final')
+        for teams in range(0, len(mini_grid), 2):
+            result = match(mini_grid[teams], mini_grid[teams+1])
+            winner, loser = kick_out(result)
+            winners.append(winner)
+            losers.append(loser)
+        if len(mini_grid) == 4:
+            print('\n3rd place game')
+            result = match(losers[0], losers[1])
+            third_place, loser = kick_out(result)
+            print('\nFinal')
+            result = match(mini_grid[0], mini_grid[1])
+            first_place, second_place = kick_out(result)
+            print(f"""\nThe winner is {first_place}
+Second place goes to {second_place}
+Third place goes to {third_place}""")
+        else:
+            quaterfinal(winners)
 
 
 # Final stage games
@@ -169,36 +195,12 @@ def final_stage(final_grid):
     play_off_teams = group_stage_games(groups)
     winners = []
     losers = []
-    if len(final_grid) * len(final_grid[0]) == 16:
-        print('\n1/8 final')
-        for teams in final_grid:
-            result = match(play_off_teams[teams[0]], play_off_teams[teams[1]])
-            winner, loser = kick_out(result)
-            winners.append(winner)
-    elif len(final_grid) == 8:
-        print('\n1/4 final')
-        for teams in range(0,len(final_grid),2):
-            result = match(final_grid[teams], final_grid[teams+1])
-            winner, loser = kick_out(result)
-            winners.append(winner)
-    elif len(final_grid) == 4:
-        print('\n1/2 final')
-        for teams in range(0,len(final_grid),2):
-            result = match(final_grid[teams], final_grid[teams+1])
-            winner, loser = kick_out(result)
-            winners.append(winner)
-            losers.append(loser)
-        print('\n3rd place game')
-        result = match(losers[0], losers[1])
-        third_place, loser = kick_out(result)
-    elif len(final_grid) == 2:
-        print('\nFinal')
-        result = match(final_grid[0], final_grid[1])
-        first_place, second_place = kick_out(result)
-        print(f"""The winner is {first_place}
-                Second place goes to {second_place}
-                Third place goes to {first_place}""")
-    final_stage(winners)
+    print('\n1/8 final')
+    for teams in final_grid:
+        result = match(play_off_teams[teams[0]], play_off_teams[teams[1]])
+        winner, loser = kick_out(result)
+        winners.append(winner)
+    quaterfinal(winners)
 
 
 final_stage(final_grid)
