@@ -96,7 +96,6 @@ def group_results(group_name):
     print(f'GROUP {group_name}')
     t = PrettyTable(['Country', 'games', 'won', 'draw', 'lost',
                      'gf', 'ga', 'diff', 'points'])
-
     for k, v in sorted(group.items(),
                        key=lambda x: (x[1]['points'], x[1]['diff']),
                        reverse = True):
@@ -109,7 +108,7 @@ def group_results(group_name):
     return mini_group
 
 
-#Iterating trougth all groups and returning all winners
+# Iterating trougth all groups and returning all winners
 def group_stage_games(groups):
     play_off_teams = {}
     for group in groups:
@@ -119,7 +118,7 @@ def group_stage_games(groups):
     return play_off_teams
 
 
-#Counting goals, points, etc to define a winners
+# Counting goals, points, etc to define a winners
 def statistics(result, group):
     for i in result:
         groups[group][i[0]]['games'] += 1
@@ -144,7 +143,7 @@ def penalties(team_1, team_2):
         if team_1_goals != team_2_goals:
             print(f'Penalty:    {team_1_goals}:{team_2_goals} --------------->')
             if team_1_goals > team_2_goals:
-                return team_1 ,team_2
+                return team_1, team_2
             else:
                 return team_2, team_1
 
@@ -170,6 +169,7 @@ def kick_out(result):
 def quaterfinal(mini_grid):
     winners = []
     losers = []
+    a = PrettyTable(['Place', 'Country'])
     if len(mini_grid) == 8 or len(mini_grid) == 4:
         print(f'\n1/{len(mini_grid)//2} final')
         for teams in range(0, len(mini_grid), 2):
@@ -184,9 +184,10 @@ def quaterfinal(mini_grid):
             print('\nFinal')
             result = match(winners[0], winners[1])
             first_place, second_place = kick_out(result)
-            print(f"""\nThe winner is {first_place}
-                      \nSecond place goes to {second_place}
-                      \nThird place goes to {third_place}\n""")
+            a.add_row([1, first_place])
+            a.add_row([2, second_place])
+            a.add_row([3, third_place])
+            print('\n', a, '\n')
         else:
             quaterfinal(winners)
 
