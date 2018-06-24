@@ -165,7 +165,8 @@ def kick_out(result):
         return winner, loser
 
 
-#quaterfinal
+# Quaterfinal iterating trougth the winner and the loser lists
+# to choose a winner
 def quaterfinal(mini_grid):
     winners = []
     losers = []
