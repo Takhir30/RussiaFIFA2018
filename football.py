@@ -155,9 +155,9 @@ def quaterfinal(mini_grid):
             print('\nFinal')
             result = match(winners[0], winners[1])
             first_place, second_place = kick_out(result)
-            a.add_row([1, first_place])
-            a.add_row([2, second_place])
-            a.add_row([3, third_place])
+            medalists = [first_place, second_place, third_place]
+            for i in medalists:
+                a.add_row([medalists.index(i)+1, i])
             print('\n', a, '\n')
         else:
             quaterfinal(winners)
