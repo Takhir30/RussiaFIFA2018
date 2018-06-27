@@ -4,26 +4,25 @@ from random import shuffle
 from prettytable import PrettyTable
 
 
-stats = {'games': 0, 'won': 0, 'draw': 0, 'lost': 0,
-         'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}
+stats = {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}
 
 groups = {
-    'A': {'Egypt': stats, 'Russia': stats,
-          'Saudi Arabia': stats, 'Uruguay': stats},
-    'B': {'Iran': stats, 'Marocco': stats,
-          'Portugal': stats, 'Spain': stats},
-    'C': {'Australia': stats, 'Denmark': stats,
-          'France': stats, 'Peru': stats},
-    'D': {'Argentina': stats, 'Croatia': stats,
-          'Iceland': stats, 'Nigeria': stats},
-    'E': {'Brasil': stats, 'Croatia': stats,
-          'Serbia': stats, 'Switherland': stats},
-    'F': {'Germany': stats, 'Korea Republic': stats,
-          'Mexico': stats, 'Sweden': stats},
-    'G': {'Belgium': stats, 'England': stats,
-          'Panama': stats, 'Tunisia': stats},
-    'H': {'Colombia': stats, 'Japan': stats,
-          'Poland': stats, 'Senegal': stats}
+    'A': {'Egypt': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Russia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Saudi Arabia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Uruguay': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'B': {'Iran': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Marocco': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Portugal': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Spain': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'C': {'Australia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Denmark': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'France': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Peru': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'D': {'Argentina': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Croatia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Iceland': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Nigeria': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'E': {'Brasil': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Croatia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Serbia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Switherland': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'F': {'Germany': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Korea Republic': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Mexico': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Sweden': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'G': {'Belgium': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'England': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Panama': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Tunisia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}},
+    'H': {'Colombia': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Japan': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0},
+          'Poland': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}, 'Senegal': {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}}
 }
 
 final_grid = [['A1', 'B2'], ['C1', 'D2'], ['E1', 'F2'], ['G1', 'H2'],
