@@ -65,8 +65,14 @@ group_F = tk.Frame(root)
 group_G = tk.Frame(root)
 group_H = tk.Frame(root)
 final_stage_page = tk.Frame(root)
+one_eighth = tk.Frame(root)
+quaterfinal = tk.Frame(root)
+semifinal = tk.Frame(root)
+third_place = tk.Frame(root)
+final = tk.Frame(root)
 frames = [start_page, second_page, third_page, group_stage, group_A, group_B, group_C,
-          group_D, group_E, group_F, group_G, group_H, final_stage_page]
+          group_D, group_E, group_F, group_G, group_H, final_stage_page, one_eighth,
+          quaterfinal, semifinal, third_place, final]
 
 # Frame raisor
 for frame in frames:
@@ -131,6 +137,17 @@ tk.Button(final_stage_page, text='3d place', width=10, height=2, command=lambda:
 tk.Button(final_stage_page, text='Final', width=53, height=2, command=lambda:raise_frame(group_E)).place(x=10, y=100)
 tk.Button(final_stage_page, text='Back', width=20, height=2, command=lambda:raise_frame(third_page)).place(x=120, y=175)
 
+# 1/8
+one_eighth_matches = fb.final_stage(fb.final_grid, fb.play_off_teams)
+for match in one_eighth_matches:
+    tk.Label(one_eighth, text=match).pack()
+# 1/4
+
+# 1/2
+
+# 3d place
+
+# Final
 
 raise_frame(start_page)
 root.mainloop()
