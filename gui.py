@@ -1,11 +1,15 @@
 import tkinter as tk
 import example as fb
+import os
 
 
+directory = os.getcwd()+'\\flags'
+flafs_list = os.listdir(directory)
+countries = [i.capitalize()[:-4] for i in a]
 
 root = tk.Tk()
 
-group_results, match_results, all_final_matches = fb.main()
+group_results, match_results, all_final_matches = fb.fifa_2018(fb.groups)
 print(all_final_matches)
 root.title('FIFA 2018')
 
@@ -58,6 +62,9 @@ img = tk.PhotoImage(file='254645_w.png')
 start_page = tk.Frame(root)
 second_page = tk.Frame(root)
 third_page = tk.Frame(root)
+user_mode = tk.Frame(root)
+your_choice = tk.Frame(root)
+random = tk.Frame(root)
 group_stage = tk.Frame(root)
 group_A = tk.Frame(root)
 group_B = tk.Frame(root)
@@ -73,7 +80,7 @@ quaterfinal = tk.Frame(root)
 semifinal = tk.Frame(root)
 third_place = tk.Frame(root)
 final = tk.Frame(root)
-frames = [start_page, second_page, third_page, group_stage, group_A, group_B, group_C,
+frames = [start_page, second_page, user_mode, your_choice, random, third_page, group_stage, group_A, group_B, group_C,
           group_D, group_E, group_F, group_G, group_H, final_stage_page, one_eighth,
           quaterfinal, semifinal, third_place, final]
 
@@ -89,7 +96,20 @@ tk.Button(start_page, text='Close', width=20, height=2, command=close_window).pa
 # Second page
 tk.Label(second_page, bg='#27292d', image=img, width=400).pack()
 tk.Button(second_page, text='Default mode', width=20, height=2, command=lambda:raise_frame(third_page)).pack()
-tk.Button(second_page, text='User mode', width=20, height=2).pack()
+tk.Button(second_page, text='User mode', width=20, height=2, command=lambda:raise_frame(user_mode)).pack()
+
+# User mode
+tk.Label(user_mode, bg='#27292d', image=img, width=400).pack()
+tk.Button(user_mode, text='Choose yourself.', width=20, height=2, command=lambda:raise_frame(your_choice)).pack()
+tk.Button(user_mode, text='Random', width=20, height=2, command=lambda:raise_frame(random)).pack()
+tk.Button(user_mode, text='Back', width=20, height=2, command=lambda:raise_frame(second_page)).pack()
+
+# Your choice
+tk.Label(user_mode, text='Enter 32 teams').pack()
+tk.Entry(user_mode).pack()
+
+# Random
+
 
 # Third page
 tk.Label(third_page, bg='#27292d', image=img, width=400).pack()
