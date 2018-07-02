@@ -1,17 +1,14 @@
 import tkinter as tk
 import example as fb
 import os
+import random as rm
 
-
-directory = os.getcwd()+'\\flags'
-flafs_list = os.listdir(directory)
-countries = [i.capitalize()[:-4] for i in a]
 
 root = tk.Tk()
 
-group_results, match_results, all_final_matches = fb.fifa_2018(fb.groups)
-print(all_final_matches)
+
 root.title('FIFA 2018')
+
 
 w = root.winfo_screenwidth() # ширина экрана
 h = root.winfo_screenheight() # высота экрана
@@ -21,6 +18,10 @@ w = w - 200 # смещение от середины
 h = h - 150
 root.geometry(f'400x300+{w}+{h}')
 
+# Start game
+def start_game(groups=fb.groups):
+    global group_results, match_results, all_final_matches
+    group_results, match_results, all_final_matches = fb.fifa_2018(groups)
 
 # Close app button
 def close_window():
@@ -55,13 +56,14 @@ def results_show(frame, group):
         row += 1
     tk.Button(frame, text='Back', width=20, height=2, command=lambda:raise_frame(group_stage)).grid(row=12, column=5, rowspan=2, columnspan=6)
 
+
 # WorldCup img
 img = tk.PhotoImage(file='254645_w.png')
 
 #All frames
 start_page = tk.Frame(root)
 second_page = tk.Frame(root)
-third_page = tk.Frame(root)
+default_mode = tk.Frame(root)
 user_mode = tk.Frame(root)
 your_choice = tk.Frame(root)
 random = tk.Frame(root)
@@ -80,11 +82,13 @@ quaterfinal = tk.Frame(root)
 semifinal = tk.Frame(root)
 third_place = tk.Frame(root)
 final = tk.Frame(root)
-frames = [start_page, second_page, user_mode, your_choice, random, third_page, group_stage, group_A, group_B, group_C,
-          group_D, group_E, group_F, group_G, group_H, final_stage_page, one_eighth,
-          quaterfinal, semifinal, third_place, final]
 
-# Frame raisor
+frames = [start_page, second_page, user_mode, your_choice, random, default_mode,
+          group_stage, group_A, group_B, group_C, group_D, group_E, group_F,
+          group_G, group_H, final_stage_page, one_eighth, quaterfinal,
+          semifinal, third_place, final]
+
+# Frame raiser
 for frame in frames:
     frame.grid(row=0, column=0, sticky='news')
 
@@ -95,26 +99,61 @@ tk.Button(start_page, text='Close', width=20, height=2, command=close_window).pa
 
 # Second page
 tk.Label(second_page, bg='#27292d', image=img, width=400).pack()
-tk.Button(second_page, text='Default mode', width=20, height=2, command=lambda:raise_frame(third_page)).pack()
+tk.Button(second_page, text='Default mode', width=20, height=2, command=lambda:raise_frame(default_mode)).pack()
 tk.Button(second_page, text='User mode', width=20, height=2, command=lambda:raise_frame(user_mode)).pack()
 
 # User mode
 tk.Label(user_mode, bg='#27292d', image=img, width=400).pack()
-tk.Button(user_mode, text='Choose yourself.', width=20, height=2, command=lambda:raise_frame(your_choice)).pack()
-tk.Button(user_mode, text='Random', width=20, height=2, command=lambda:raise_frame(random)).pack()
+tk.Button(user_mode, text='Choose yourself', width=20, height=2, command=lambda:raise_frame(your_choice)).pack()
+tk.Button(user_mode, text='Random', width=20, height=2, command=lambda:[raise_frame(random)]).pack()
 tk.Button(user_mode, text='Back', width=20, height=2, command=lambda:raise_frame(second_page)).pack()
 
 # Your choice
-tk.Label(user_mode, text='Enter 32 teams').pack()
-tk.Entry(user_mode).pack()
+# tk.Label(your_choice, text='Enter 32 teams').grid(row=0, column=4)
+# tk.Entry(your_choice).grid(row=1, column=4)
+# row = 2
+# column =0
+# for flag in flags_list[:]:
+#     if column == 10:
+#         column = 0
+#         row += 1
+#     text = flag.capitalize()[:-4].replace('_', ' ')
+#     tk.Button(your_choice, text=text).grid(row=row, column=column, columnspan=2)
+#     column += 2
+
+# Flags and names of all countries
+directory = os.getcwd()+'\\flags'
+flags_list = os.listdir(directory)
+countries = [i.capitalize()[:-4].replace('_', ' ') if len(i)>7 else i.upper()[:-4] for i in flags_list]
+fm_pool = rm.sample(countries, 32)
 
 # Random
-
+random_group ={}
+row = 0
+column = 0
+n = 0
+for i in groups_in:
+    country_stats = {}
+    if i == 'E':
+        n = 6
+        column = 0
+    row = 0 + n
+    tk.Label(random, text=f'Group {i}').grid(row=row, column=column, columnspan=2)
+    row += 1
+    for _ in range(4):
+        country = fm_pool.pop(0)
+        tk.Label(random, text=country).grid(row=row, column=column, columnspan=2)
+        country_stats[country] = {'games': 0, 'won': 0, 'draw': 0, 'lost': 0, 'gf': 0, 'ga': 0, 'diff': 0, 'points': 0}
+        row += 1
+    column += 2
+    random_group[i] = country_stats
+tk.Button(random, text='Next', height=2, command=lambda:raise_frame(default_mode)).grid(row=row+1, column=4)
+tk.Button(random, text='Back', height=2, command=lambda:raise_frame(user_mode)).grid(row=row+1, column=3)
 
 # Third page
-tk.Label(third_page, bg='#27292d', image=img, width=400).pack()
-tk.Button(third_page, text='Group stage', width=20, height=2, command=lambda:raise_frame(group_stage)).pack()
-tk.Button(third_page, text='Final stage', width=20, height=2, command=lambda:raise_frame(final_stage_page)).pack()
+tk.Label(default_mode, bg='#27292d', image=img, width=400).pack()
+tk.Button(default_mode, text='Group stage', width=20, height=2, command=lambda:raise_frame(group_stage)).pack()
+tk.Button(default_mode, text='Final stage', width=20, height=2, command=lambda:raise_frame(final_stage_page)).pack()
 
 # Group stage page
 tk.Button(group_stage, text='Group A', width=10, height=2, command=lambda:raise_frame(group_A)).place(x=10, y=25)
@@ -125,7 +164,7 @@ tk.Button(group_stage, text='Group E', width=10, height=2, command=lambda:raise_
 tk.Button(group_stage, text='Group F', width=10, height=2, command=lambda:raise_frame(group_F)).place(x=110, y=100)
 tk.Button(group_stage, text='Group G', width=10, height=2, command=lambda:raise_frame(group_G)).place(x=210, y=100)
 tk.Button(group_stage, text='Group H', width=10, height=2, command=lambda:raise_frame(group_H)).place(x=310, y=100)
-tk.Button(group_stage, text='Back', width=20, height=2, command=lambda:raise_frame(third_page)).place(x=120, y=175)
+tk.Button(group_stage, text='Back', width=20, height=2, command=lambda:raise_frame(default_mode)).place(x=120, y=175)
 
 # Group A
 results_show(group_A, 'A')
@@ -157,7 +196,7 @@ tk.Button(final_stage_page, text='1/4', width=10, height=2, command=lambda:raise
 tk.Button(final_stage_page, text='1/2', width=10, height=2, command=lambda:raise_frame(semifinal)).place(x=210, y=25)
 tk.Button(final_stage_page, text='3d place', width=10, height=2, command=lambda:raise_frame(third_place)).place(x=310, y=25)
 tk.Button(final_stage_page, text='Final', width=53, height=2, command=lambda:raise_frame(final)).place(x=10, y=100)
-tk.Button(final_stage_page, text='Back', width=20, height=2, command=lambda:raise_frame(third_page)).place(x=120, y=175)
+tk.Button(final_stage_page, text='Back', width=20, height=2, command=lambda:raise_frame(default_mode)).place(x=120, y=175)
 
 # 1/8
 for match in all_final_matches[:8]:
