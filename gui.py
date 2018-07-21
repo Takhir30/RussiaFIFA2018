@@ -4,12 +4,11 @@ import os
 import random as rm
 
 
+group_results, match_results, all_final_matches = fb.fifa_2018(fb.groups)
+
+
 root = tk.Tk()
-
-
 root.title('FIFA 2018')
-
-
 w = root.winfo_screenwidth() # ширина экрана
 h = root.winfo_screenheight() # высота экрана
 w = w//2 # середина экрана
@@ -18,10 +17,6 @@ w = w - 200 # смещение от середины
 h = h - 150
 root.geometry(f'400x300+{w}+{h}')
 
-# Start game
-def start_game(groups=fb.groups):
-    global group_results, match_results, all_final_matches
-    group_results, match_results, all_final_matches = fb.fifa_2018(groups)
 
 # Close app button
 def close_window():
@@ -121,7 +116,6 @@ tk.Button(user_mode, text='Back', width=20, height=2, command=lambda:raise_frame
 #     tk.Button(your_choice, text=text).grid(row=row, column=column, columnspan=2)
 #     column += 2
 
-# Flags and names of all countries
 directory = os.getcwd()+'\\flags'
 flags_list = os.listdir(directory)
 countries = [i.capitalize()[:-4].replace('_', ' ') if len(i)>7 else i.upper()[:-4] for i in flags_list]
